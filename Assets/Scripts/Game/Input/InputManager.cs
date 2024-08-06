@@ -21,13 +21,22 @@ public class InputManager : MonoBehaviour
     {
         _input = new Inputs();
 
-        _input.InGame.Move.performed += ctx => _player.Move(ctx.ReadValue<Vector2>());
+        _input.InGame.Move.performed += ctx => _player.Move(ctx.ReadValue<float>());
+        _input.InGame.Move.canceled += ctx => _player.StopMove();
+
+        _input.InGame.Hit.performed += ctx => _player.Hit();
+        _input.InGame.Hit.performed += ctx => _player.Kick();
+
 
         _input.Enable();
     }
     private void OnDisable()
     {
-        _input.InGame.Move.performed -= ctx => _player.Move(ctx.ReadValue<Vector2>());
+        _input.InGame.Move.performed -= ctx => _player.Move(ctx.ReadValue<float>());
+        _input.InGame.Move.canceled -= ctx => _player.StopMove();
+
+        _input.InGame.Hit.performed -= ctx => _player.Hit();
+        _input.InGame.Hit.performed -= ctx => _player.Kick();
 
         _input.Disable();
     }

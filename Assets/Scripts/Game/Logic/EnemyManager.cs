@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,16 +16,7 @@ public class EnemyManager : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < 1; i++)
-        {
-            var prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
-            var enemyObj = Instantiate(prefab, new Vector2(Random.Range(10, 20), prefab.transform.position.y), Quaternion.identity, enemyParentTransform);
-            var enemy = enemyObj.GetComponent<Enemy>();
-
-            enemies.Add(enemy);
-
-            enemy.Init(this);
-        }
+        for (int i = 0; i < 1; i++) SpawnEnemy();
     }
 
     public void EnemyAttacked()
@@ -35,6 +27,8 @@ public class EnemyManager : MonoBehaviour
 
         foreach (var enemy in enemies)
             enemy.SetAttackTarget(playerTransform);
+
+        StartCoroutine(SpawnEnemiesCoroutine(3, 6));
     }
 
     public void EnemyDied(Enemy enemy)
@@ -42,5 +36,29 @@ public class EnemyManager : MonoBehaviour
         enemies.Remove(enemy);
 
         Destroy(enemy.gameObject);
+    }
+
+    private Enemy SpawnEnemy()
+    {
+        var prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
+        var enemyObj = Instantiate(prefab, 
+            new Vector2((Random.value > 0.5f ? -40 : 40) + playerTransform.position.x, prefab.transform.position.y), Quaternion.identity, enemyParentTransform);
+        var enemy = enemyObj.GetComponent<Enemy>();
+
+        enemies.Add(enemy);
+
+        enemy.Init(this);
+
+        return enemy;
+    }
+
+    IEnumerator SpawnEnemiesCoroutine(int count, float delay)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            SpawnEnemy().SetAttackTarget(playerTransform);
+
+            yield return new WaitForSeconds(Random.Range(delay/2, delay));
+        }
     }
 }

@@ -5,6 +5,15 @@ public class Player : Character
 {
     [Header("Other")]
     [SerializeField] private PlayerCombat playerCombat;
+    [SerializeField] private PlayerInteraction playerInteraction;
+
+    private UIMain _uiMain;
+
+    [Inject]
+    public void Construct(UIMain uiMain)
+    {
+        _uiMain = uiMain;
+    }
 
     //input
     public void Move(float direction)
@@ -18,27 +27,40 @@ public class Player : Character
     {
         SetMovementDirection(0);
     }
+    public void Run()
+    {
+        SetMovementSpeed(runSpeed);
+    }
+    public void StopRun()
+    {
+        SetMovementSpeed(walkSpeed);
+    }
     public void Hit()
     {
         if (!_canAttack) return;
 
         animator.Play(_animatorIDPunch);
+        StartAttack();
 
         playerCombat.Hit();
-
-        _canMove = false;
-        StopMove();
     }
     public void Kick()
     {
         if (!_canAttack) return;
         
         animator.Play(_animatorIDKick);
+        StartAttack();
 
         playerCombat.Kick();
+    }
 
-        _canMove = false;
-        StopMove();
+    public void Interact()
+    {
+        switch (playerInteraction.GetInteraction())
+        {
+            case InteractionDialogue dialogueInteraction: _uiMain.StartDialogue(); break;
+            default : break;
+        }
     }
 
 
@@ -50,5 +72,11 @@ public class Player : Character
         {
             Debug.Log("Gameover");
         }
+    }
+
+    private void StartAttack()
+    {
+        _canMove = false;
+        StopMove();
     }
 }

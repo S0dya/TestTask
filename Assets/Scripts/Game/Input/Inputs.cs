@@ -37,6 +37,24 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""Run"",
+                    ""type"": ""Value"",
+                    ""id"": ""ea9877d5-d555-4740-be66-538858ea2e70"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Value"",
+                    ""id"": ""359ab63c-2a5c-4f39-a54d-607b8f58a112"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Hit"",
                     ""type"": ""Value"",
                     ""id"": ""5bc84232-5068-449e-b015-5da32b0aa25b"",
@@ -132,6 +150,67 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3033ea42-154c-4bb8-b624-6663b85f8e30"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ab3b9b36-69ec-4726-9894-54f5fbc32348"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""InDialogue"",
+            ""id"": ""4d3c7f8f-d4ea-492f-ae84-56fbf3ba73bf"",
+            ""actions"": [
+                {
+                    ""name"": ""SkipLine"",
+                    ""type"": ""Value"",
+                    ""id"": ""d6378e7c-2cd8-4ba8-abfa-6beb69f31878"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""baf2d49d-2f35-4127-96fc-018129595a50"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SkipLine"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c1681b28-ea4e-41d4-b880-dffb00fc393b"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SkipLine"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -141,8 +220,13 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         // InGame
         m_InGame = asset.FindActionMap("InGame", throwIfNotFound: true);
         m_InGame_Move = m_InGame.FindAction("Move", throwIfNotFound: true);
+        m_InGame_Run = m_InGame.FindAction("Run", throwIfNotFound: true);
+        m_InGame_Interact = m_InGame.FindAction("Interact", throwIfNotFound: true);
         m_InGame_Hit = m_InGame.FindAction("Hit", throwIfNotFound: true);
         m_InGame_Kick = m_InGame.FindAction("Kick", throwIfNotFound: true);
+        // InDialogue
+        m_InDialogue = asset.FindActionMap("InDialogue", throwIfNotFound: true);
+        m_InDialogue_SkipLine = m_InDialogue.FindAction("SkipLine", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -205,6 +289,8 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_InGame;
     private List<IInGameActions> m_InGameActionsCallbackInterfaces = new List<IInGameActions>();
     private readonly InputAction m_InGame_Move;
+    private readonly InputAction m_InGame_Run;
+    private readonly InputAction m_InGame_Interact;
     private readonly InputAction m_InGame_Hit;
     private readonly InputAction m_InGame_Kick;
     public struct InGameActions
@@ -212,6 +298,8 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         private @Inputs m_Wrapper;
         public InGameActions(@Inputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_InGame_Move;
+        public InputAction @Run => m_Wrapper.m_InGame_Run;
+        public InputAction @Interact => m_Wrapper.m_InGame_Interact;
         public InputAction @Hit => m_Wrapper.m_InGame_Hit;
         public InputAction @Kick => m_Wrapper.m_InGame_Kick;
         public InputActionMap Get() { return m_Wrapper.m_InGame; }
@@ -226,6 +314,12 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @Run.started += instance.OnRun;
+            @Run.performed += instance.OnRun;
+            @Run.canceled += instance.OnRun;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
             @Hit.started += instance.OnHit;
             @Hit.performed += instance.OnHit;
             @Hit.canceled += instance.OnHit;
@@ -239,6 +333,12 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @Run.started -= instance.OnRun;
+            @Run.performed -= instance.OnRun;
+            @Run.canceled -= instance.OnRun;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
             @Hit.started -= instance.OnHit;
             @Hit.performed -= instance.OnHit;
             @Hit.canceled -= instance.OnHit;
@@ -262,10 +362,62 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         }
     }
     public InGameActions @InGame => new InGameActions(this);
+
+    // InDialogue
+    private readonly InputActionMap m_InDialogue;
+    private List<IInDialogueActions> m_InDialogueActionsCallbackInterfaces = new List<IInDialogueActions>();
+    private readonly InputAction m_InDialogue_SkipLine;
+    public struct InDialogueActions
+    {
+        private @Inputs m_Wrapper;
+        public InDialogueActions(@Inputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @SkipLine => m_Wrapper.m_InDialogue_SkipLine;
+        public InputActionMap Get() { return m_Wrapper.m_InDialogue; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InDialogueActions set) { return set.Get(); }
+        public void AddCallbacks(IInDialogueActions instance)
+        {
+            if (instance == null || m_Wrapper.m_InDialogueActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_InDialogueActionsCallbackInterfaces.Add(instance);
+            @SkipLine.started += instance.OnSkipLine;
+            @SkipLine.performed += instance.OnSkipLine;
+            @SkipLine.canceled += instance.OnSkipLine;
+        }
+
+        private void UnregisterCallbacks(IInDialogueActions instance)
+        {
+            @SkipLine.started -= instance.OnSkipLine;
+            @SkipLine.performed -= instance.OnSkipLine;
+            @SkipLine.canceled -= instance.OnSkipLine;
+        }
+
+        public void RemoveCallbacks(IInDialogueActions instance)
+        {
+            if (m_Wrapper.m_InDialogueActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IInDialogueActions instance)
+        {
+            foreach (var item in m_Wrapper.m_InDialogueActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_InDialogueActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public InDialogueActions @InDialogue => new InDialogueActions(this);
     public interface IInGameActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnRun(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
         void OnHit(InputAction.CallbackContext context);
         void OnKick(InputAction.CallbackContext context);
+    }
+    public interface IInDialogueActions
+    {
+        void OnSkipLine(InputAction.CallbackContext context);
     }
 }

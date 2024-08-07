@@ -15,6 +15,24 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "Run",
+                    "type": "Value",
+                    "id": "ea9877d5-d555-4740-be66-538858ea2e70",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Interact",
+                    "type": "Value",
+                    "id": "359ab63c-2a5c-4f39-a54d-607b8f58a112",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Hit",
                     "type": "Value",
                     "id": "5bc84232-5068-449e-b015-5da32b0aa25b",
@@ -110,6 +128,67 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "3033ea42-154c-4bb8-b624-6663b85f8e30",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ab3b9b36-69ec-4726-9894-54f5fbc32348",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "InDialogue",
+            "id": "4d3c7f8f-d4ea-492f-ae84-56fbf3ba73bf",
+            "actions": [
+                {
+                    "name": "SkipLine",
+                    "type": "Value",
+                    "id": "d6378e7c-2cd8-4ba8-abfa-6beb69f31878",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "baf2d49d-2f35-4127-96fc-018129595a50",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkipLine",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c1681b28-ea4e-41d4-b880-dffb00fc393b",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkipLine",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

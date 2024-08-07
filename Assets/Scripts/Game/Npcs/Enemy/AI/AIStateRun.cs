@@ -13,7 +13,7 @@ public class AIStateRun : AIState
         enemy.RunTo(targetPosition);
         enemy.HandleFacingDirection();
 
-        if (Math.Abs(targetPosition.x - enemy.transform.position.x) < 3)
+        if (Math.Abs(targetPosition.x - enemy.transform.position.x) < 6)
         {
             enemy.TransitionToState(enemy.AttackState);
         }

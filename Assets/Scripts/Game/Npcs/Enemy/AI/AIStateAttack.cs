@@ -13,11 +13,11 @@ public class AIStateAttack : AIState
         var targetPosition = enemy.GetAttackTargetPosition();
         var distanceWithTarget = Math.Abs(targetPosition.x - enemy.transform.position.x);
 
-        if (distanceWithTarget > 3)
+        if (distanceWithTarget > 4)
         {
             enemy.WalkTo(targetPosition);
         }
-        else if (distanceWithTarget < 2.5f && enemy.CanAttack())
+        else if (distanceWithTarget < 3 && enemy.CanAttack())
         {
             enemy.StartAttack();
         }

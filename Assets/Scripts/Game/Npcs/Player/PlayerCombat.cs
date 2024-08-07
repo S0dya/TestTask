@@ -23,14 +23,10 @@ public class PlayerCombat : Combat
     public void Hit()
     {
         SetAttackInfo(AttackEnum.StartKick);
-
-        PerformAttack();
     }
     public void Kick()
     {
         SetAttackInfo(AttackEnum.StartKick);
-
-        PerformAttack();
     }
 
     public void PerformAttack()

@@ -30,7 +30,7 @@ public class AIStateRoam : AIState
         {
             enemy.WalkTo(_targetPosition);
 
-            if (Vector2.Distance(enemy.transform.position, _targetPosition) < 0.1f)
+            if (Mathf.Abs(enemy.transform.position.x - _targetPosition.x) < 0.1f)
             {
                 _isWaiting = true;
                 _waitTimer = _waitTime;
@@ -47,9 +47,9 @@ public class AIStateRoam : AIState
 
     private void SetRandomTargetPosition(Vector2 position)
     {
-        _targetPosition = position + GetRandomPosition(2f);
+        _targetPosition = position + GetRandomPosition(4f);
 
-        _waitTime = Random.Range(1f, 3f); 
+        _waitTime = Random.Range(0.1f, 1.5f); 
     }
 
     private Vector2 GetRandomPosition(float radius)

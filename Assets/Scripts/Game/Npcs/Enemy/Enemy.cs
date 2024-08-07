@@ -68,8 +68,6 @@ public class Enemy : Character //NPC/Character
 
         animator.Play(enemyCombat.SetRandomAttack());
 
-        enemyCombat.PerformAttack();
-
         TransitionToState(RoamState);
     }
 

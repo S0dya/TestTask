@@ -1,31 +1,27 @@
 using UnityEngine;
+using Zenject;
 
-public class Player : MonoBehaviour
+public class Player : Character
 {
-    [SerializeField] private PlayerMovement playerMovement;
+    [Header("Other")]
     [SerializeField] private PlayerCombat playerCombat;
-
-    [SerializeField] private Animator animator;
-
-    private bool _canMove = true;
-    private bool _canHit = true;
 
     //input
     public void Move(float direction)
     {
         if (!_canMove) return;
 
-        playerMovement.SetMoveement(direction);
+        SetMovementDirection(direction);
     }
     public void StopMove()
     {
-        playerMovement.SetMoveement(0);
+        SetMovementDirection(0);
 
 
     }
     public void Hit()
     {
-        if (!_canHit) return;
+        if (!_canAttack) return;
         
         playerCombat.Hit();
 
@@ -33,15 +29,21 @@ public class Player : MonoBehaviour
     }
     public void Kick()
     {
-        if (!_canHit) return;
+        if (!_canAttack) return;
         
         playerCombat.Kick();
 
         //_canMove = false;
     }
 
-    public void StoppedHitting()
+
+    public override void ChangeHP(int amount)
     {
-        _canMove = true;
+        base.ChangeHP(amount);
+
+        if (_curHp == 0)
+        {
+            //die
+        }
     }
 }

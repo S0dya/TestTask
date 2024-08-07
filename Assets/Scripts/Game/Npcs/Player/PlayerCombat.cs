@@ -2,14 +2,10 @@ using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
-class AttackInfo
+class PlayerAttackInfo : AttackInfo
 {
     public AttackEnum AttackName;
 
-    public float Damage = 2;
-
-    public Vector2 ColliderSize = Vector2.one;
-    public Vector2 AttackLocalPosition;
 }
 enum AttackEnum
 {
@@ -17,14 +13,11 @@ enum AttackEnum
     StartKick,
 }
 
-public class PlayerCombat : MonoBehaviour
+public class PlayerCombat : Combat
 {
-    [SerializeField] private AttackInfo[] attacks;
+    [SerializeField] private PlayerAttackInfo[] attacks;
 
-    [Header("Other")]
-    [SerializeField] private LayerMask enemyLayer;
-
-    private AttackInfo _curAttack;
+    private PlayerAttackInfo _curAttack;
 
     //input
     public void Hit()
@@ -40,17 +33,23 @@ public class PlayerCombat : MonoBehaviour
         PerformAttack();
     }
 
+    public void PerformAttack()
+    {
+        foreach (var hitCollider in PerformAttack(_curAttack))
+            hitCollider.GetComponent<Enemy>()?.ChangeHP(-_curAttack.Damage);
+    }
+
     private void SetAttackInfo(AttackEnum attackEnum)
     {
         _curAttack = attacks.First(attackInfo => attackInfo.AttackName == attackEnum);
     }
-    private void PerformAttack()
-    {
-        Collider[] hitColliders = Physics.OverlapSphere(_curAttack.AttackLocalPosition, _curAttack.ColliderSize.x / 2, enemyLayer);
 
-        foreach (Collider hitCollider in hitColliders)
+    private void OnDrawGizmosSelected()
+    {
+        if (_curAttack != null)
         {
-            //hitCollider.GetComponent<Enemy>()?.TakeDamage(_curAttack.Damage);
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere((Vector2)transform.position + _curAttack.AttackLocalPosition, _curAttack.ColliderSize.x / 2);
         }
     }
 }

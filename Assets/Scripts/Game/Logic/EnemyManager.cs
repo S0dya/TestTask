@@ -15,7 +15,7 @@ public class EnemyManager : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 1; i++)
         {
             var prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
             var enemyObj = Instantiate(prefab, new Vector2(Random.Range(10, 20), prefab.transform.position.y), Quaternion.identity, enemyParentTransform);

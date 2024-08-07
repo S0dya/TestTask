@@ -10,30 +10,35 @@ public class Player : Character
     public void Move(float direction)
     {
         if (!_canMove) return;
-
+     
         SetMovementDirection(direction);
+        HandleFacingDirection();
     }
     public void StopMove()
     {
         SetMovementDirection(0);
-
-
     }
     public void Hit()
     {
         if (!_canAttack) return;
-        
+
+        animator.Play(_animatorIDPunch);
+
         playerCombat.Hit();
 
-        //_canMove = false;
+        _canMove = false;
+        StopMove();
     }
     public void Kick()
     {
         if (!_canAttack) return;
         
+        animator.Play(_animatorIDKick);
+
         playerCombat.Kick();
 
-        //_canMove = false;
+        _canMove = false;
+        StopMove();
     }
 
 
@@ -43,7 +48,7 @@ public class Player : Character
 
         if (_curHp == 0)
         {
-            //die
+            Debug.Log("Gameover");
         }
     }
 }

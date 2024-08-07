@@ -43,13 +43,4 @@ public class PlayerCombat : Combat
     {
         _curAttack = attacks.First(attackInfo => attackInfo.AttackName == attackEnum);
     }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (_curAttack != null)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere((Vector2)transform.position + _curAttack.AttackLocalPosition, _curAttack.ColliderSize.x / 2);
-        }
-    }
 }

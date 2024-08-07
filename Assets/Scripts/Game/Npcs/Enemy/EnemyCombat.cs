@@ -13,9 +13,11 @@ public class EnemyCombat : Combat
 
     private EnemyAttackInfo _curAttack;
 
-    public void SetRandomAttack()
+    public string SetRandomAttack()
     {
         _curAttack = attacks[Random.Range(0, attacks.Length)];
+
+        return _curAttack.AttackName;
     }
     public void PerformAttack()
     {

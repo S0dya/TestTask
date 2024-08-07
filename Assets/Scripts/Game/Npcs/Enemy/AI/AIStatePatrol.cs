@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 public class AIStatePatrol : AIState
@@ -12,6 +13,7 @@ public class AIStatePatrol : AIState
     public override void UpdateState(Enemy enemy)
     {
         enemy.WalkTo(_curTargetPos);
+        enemy.HandleFacingDirection();
 
         if (Math.Abs(_curTargetPos.x - enemy.transform.position.x) < 0.1f)
         {

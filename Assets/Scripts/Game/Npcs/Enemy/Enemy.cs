@@ -14,6 +14,7 @@ public class Enemy : Character //NPC/Character
     public readonly AIStatePatrol PatrolState = new();
     public readonly AIStateRun RunState = new();
     public readonly AIStateAttack AttackState = new();
+    public readonly AIStateRoam RoamState = new();
 
     //local
     private EnemyManager _enemyManager;
@@ -50,9 +51,8 @@ public class Enemy : Character //NPC/Character
         _currentState.EnterState(this);
     }
 
-    public void WalkTo(Vector2 targetPos) => MoveTo(targetPos, walkingSpeed);
+    public void WalkTo(Vector2 targetPos) => MoveTo(targetPos, walkSpeed);
     public void RunTo(Vector2 targetPos) => MoveTo(targetPos, runSpeed);
-
 
     public void SetAttackTarget(Transform transform)
     {
@@ -64,14 +64,13 @@ public class Enemy : Character //NPC/Character
     public void StartAttack()
     {
         _canAttack = _canMove = false;
+        SetMovementDirection(0);
 
-        enemyCombat.SetRandomAttack();
+        animator.Play(enemyCombat.SetRandomAttack());
 
         enemyCombat.PerformAttack();
 
-        SetMovementDirection(0);
-
-        StopAttack();
+        TransitionToState(RoamState);
     }
 
     public override void ChangeHP(int amount)
@@ -82,9 +81,15 @@ public class Enemy : Character //NPC/Character
 
         if (_curHp == 0) _enemyManager.EnemyDied(this);
     }
+
+    public void HandleFacingDirection(Vector2 targetPos)
+    {
+        HandleFacingDirection((targetPos - (Vector2)transform.position).normalized.x);
+    }
+
     public override void StopAttack()
     {
-        _canMove = true;
+        base.StopAttack();
 
         StartCoroutine(AttackCooldownCoroutine(enemyCombat.GetCooldown()));
     }
@@ -122,5 +127,7 @@ public class Enemy : Character //NPC/Character
         yield return new WaitForSeconds(cooldown);
 
         _canAttack = true;
+
+        TransitionToState(AttackState);
     }
 }

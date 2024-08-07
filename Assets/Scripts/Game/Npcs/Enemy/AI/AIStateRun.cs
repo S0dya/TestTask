@@ -11,6 +11,7 @@ public class AIStateRun : AIState
         var targetPosition = enemy.GetAttackTargetPosition();
 
         enemy.RunTo(targetPosition);
+        enemy.HandleFacingDirection();
 
         if (Math.Abs(targetPosition.x - enemy.transform.position.x) < 3)
         {

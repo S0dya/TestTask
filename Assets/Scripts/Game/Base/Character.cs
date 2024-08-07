@@ -1,4 +1,5 @@
 using System;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Character : MonoBehaviour
@@ -6,12 +7,12 @@ public class Character : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private int maxHp = 10;
 
-    [SerializeField] private protected float walkingSpeed = 4;
+    [SerializeField] private protected float walkSpeed = 4;
     [SerializeField] private protected float runSpeed = 7;
 
     [Header("Other")]
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private Animator animator;
+    [SerializeField] private protected Animator animator;
 
     private protected int _curHp;
 
@@ -22,11 +23,20 @@ public class Character : MonoBehaviour
     private float _curMovementDirection;
     private bool _isFacingLeft;
 
+    private protected int _animatorIDMovementDirection;
+    private protected int _animatorIDPunch;
+    private protected int _animatorIDKick;
+
     protected virtual void Start()
     {
         _curHp = maxHp;
 
-        _curMovementSpeed = walkingSpeed;
+        _curMovementSpeed = walkSpeed;
+
+        _animatorIDMovementDirection = Animator.StringToHash("MovementDirection");
+        _animatorIDPunch = Animator.StringToHash("Punch");
+        _animatorIDKick = Animator.StringToHash("Kick");
+
     }
 
     protected virtual void Update()
@@ -38,12 +48,15 @@ public class Character : MonoBehaviour
     {
         _curMovementDirection = value;
 
-        if ((_curMovementDirection > 0 && _isFacingLeft)
-         || (_curMovementDirection < 0 && !_isFacingLeft))
-        {
-            Flip();
-        }
+        animator.SetFloat(_animatorIDMovementDirection, _curMovementDirection);
     }
+    public void HandleFacingDirection() => HandleFacingDirection(_curMovementDirection);
+    public void HandleFacingDirection(float direction)
+    {
+        if ((direction > 0 && _isFacingLeft) || (direction < 0 && !_isFacingLeft)) 
+            Flip();
+    }
+
     public void SetMovementSpeed(float value)
     {
         _curMovementSpeed = value;

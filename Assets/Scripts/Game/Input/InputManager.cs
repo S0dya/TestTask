@@ -25,7 +25,7 @@ public class InputManager : MonoBehaviour
         _input.InGame.Move.canceled += ctx => _player.StopMove();
 
         _input.InGame.Hit.performed += ctx => _player.Hit();
-        _input.InGame.Hit.performed += ctx => _player.Kick();
+        _input.InGame.Kick.performed += ctx => _player.Kick();
 
 
         _input.Enable();
@@ -36,7 +36,7 @@ public class InputManager : MonoBehaviour
         _input.InGame.Move.canceled -= ctx => _player.StopMove();
 
         _input.InGame.Hit.performed -= ctx => _player.Hit();
-        _input.InGame.Hit.performed -= ctx => _player.Kick();
+        _input.InGame.Kick.performed -= ctx => _player.Kick();
 
         _input.Disable();
     }

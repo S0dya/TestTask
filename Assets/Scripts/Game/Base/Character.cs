@@ -1,11 +1,10 @@
 using System;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Character : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] private int maxHp = 10;
+    [SerializeField] private protected int maxHp = 10;
 
     [SerializeField] private protected float walkSpeed = 4;
     [SerializeField] private protected float runSpeed = 7;

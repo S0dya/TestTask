@@ -15,6 +15,13 @@ public class Player : Character
         _uiMain = uiMain;
     }
 
+    protected override void Start()
+    {
+        base.Start();
+
+        _uiMain.SetPlayerHPBar(1);
+    }
+
     //input
     public void Move(float direction)
     {
@@ -67,6 +74,8 @@ public class Player : Character
     public override void ChangeHP(int amount)
     {
         base.ChangeHP(amount);
+
+        _uiMain.SetPlayerHPBar((float)_curHp / (float)maxHp);
 
         if (_curHp == 0)
         {

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIMain : MonoBehaviour
 {
@@ -11,14 +12,28 @@ public class UIMain : MonoBehaviour
     [SerializeField] private string[] dialogueLines;
 
     [Header("UI")]
+    [SerializeField] private Image playerHpBarImage;
+    [SerializeField] private Gradient playerHpBarColor;
+
     [SerializeField] private GameObject dialogueObj;
     [SerializeField] private TextMeshProUGUI lineText;
+
+    private Color _curPlayerHpBarColor;
 
     private int _curLineI;
 
     private StringBuilder _lineBuilder = new();
 
     private Coroutine _writeLineCor;
+
+    public void SetPlayerHPBar(float value)
+    {
+        playerHpBarImage.fillAmount = value;
+
+        _curPlayerHpBarColor = playerHpBarColor.Evaluate(value);
+
+        playerHpBarImage.color = _curPlayerHpBarColor;
+    }
 
     public void StartDialogue()
     {
